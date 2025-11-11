@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gerund / Bare / Full Infinitive — 60 mondatos gyakorló</title>
+  <style>
+    :root{--bg1:#fce7f3;--bg2:#e0f2fe;--card:#ffffff;--accent:#0ea5e9;--success:#16a34a;--error:#dc2626}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .app{width:100%;max-width:980px;background:var(--card);border-radius:14px;box-shadow:0 10px 40px rgba(2,6,23,0.12);overflow:hidden}
+    header{padding:18px 20px;background:linear-gradient(90deg,#0ea5e9,#60a5fa);color:white}
+    header h1{margin:0;font-size:1.1rem}
+    .main{display:flex;gap:18px;padding:18px}
+    .left{flex:1}
+    .card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(2,6,23,0.04)}
+    #sentence{font-size:1.25rem;text-align:center;margin:10px 0}
+    .options{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+    .opt-btn{padding:10px 14px;border-radius:10px;border:2px solid rgba(2,6,23,0.06);background:#fcfdff;font-weight:600;cursor:pointer;min-width:120px;text-align:center}
+    .opt-btn:disabled{opacity:0.6;cursor:default}
+    .opt-btn.success{border-color:var(--success);color:var(--success);background:rgba(16,185,129,0.06)}
+    .opt-btn.error{border-color:var(--error);color:var(--error);background:rgba(239,68,68,0.06)}
+    #status{height:44px;display:flex;align-items:center;justify-content:center;margin-top:12px;font-weight:700;border-radius:10px}
+    .controls{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px}
+    .next{padding:10px 12px;border-radius:10px;border:none;background:#0ea5e9;color:white;font-weight:700;cursor:pointer}
+    .next:disabled{opacity:0.6;cursor:default}
+    .progress{font-weight:700}
+    .right{width:320px;min-width:220px}
+    .examples{display:flex;flex-direction:column;gap:8px}
+    .example{padding:10px;border-radius:10px;background:linear-gradient(90deg,#f8fafc,#ffffff)}
+    footer{padding:12px 18px;background:linear-gradient(90deg,rgba(14,165,233,0.06),rgba(96,165,250,0.04));font-size:0.9rem;color:#0f172a}
+    @media (max-width:880px){.main{flex-direction:column}.right{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="app" role="application">
+    <header>
+      <h1>Gerund / Bare infinitive / Full infinitive — 60 mondatos gyakorló</h1>
+    </header>
+
+    <div class="main">
+      <div class="left">
+        <div class="card">
+          <div id="sentence">Betöltés…</div>
+
+          <div class="options" id="options"></div>
+
+          <div id="status" aria-live="polite"></div>
+
+          <div class="controls">
+            <div class="progress">Pont: <span id="score">0</span>/<span id="total">60</span></div>
+            <button id="nextBtn" class="next" disabled>Következő</button>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="card" style="margin-top:6px">
+          <strong>Szabályok (röviden)</strong>
+          <ul style="margin:8px 0 0 18px">
+            <li>Ha az ige -ing alakját kell választani, a program automatikusan kezeli az angol helyesírást.</li>
+            <li>Pl.: <em>make → making</em>, <em>write → writing</em>, <em>lie → lying</em>, <em>run → running</em>.</li>
+            <li>Gondolkodj a jelentésen: <em>want / decide / plan</em> + <strong>to + verb</strong>, modal + <strong>bare</strong>, érzelmi/élvezeti igék + <strong>-ing</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="card examples">
+          <strong>Példák</strong>
+          <div class="example">He decided ___ (leave) early. → <em>to leave</em></div>
+          <div class="example">She enjoys ___ (cook) for friends. → <em>cooking</em></div>
+          <div class="example">They can ___ (come) tomorrow. → <em>come</em></div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="card" style="margin-top:6px">
+          <div id="info">Véletlenszerű sorrend, minden mondat egyszer jelenik meg.</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Készítette: AI ESL gyakorló • Mobilra optimalizálva
+    </footer>
+  </div>
+
+  <script>
+    // 60 általános mondat - mindegyikhez a base verb meg van adva és a helyes forma ('base' | 'to' | 'ing')
+    const rawQuestions = [
+      {t: 'I want ___ home early.', v: 'go', ans: 'to'},
+      {t: 'She would like ___ you tomorrow.', v: 'meet', ans: 'to'},
+      {t: 'He forgot ___ the door.', v: 'lock', ans: 'to'},
+      {t: 'Please teach me ___ the guitar.', v: 'play', ans: 'to'},
+      {t: 'I need ___ harder for the exam.', v: 'study', ans: 'to'},
+      {t: 'She can ___ very well.', v: 'swim', ans: 'base'},
+      {t: 'You must ___ your homework.', v: 'finish', ans: 'base'},
+      {t: 'They made me ___ after the argument.', v: 'apologize', ans: 'base'},
+      {t: 'Please let him ___ again.', v: 'try', ans: 'base'},
+      {t: 'I like ___ before bed.', v: 'read', ans: 'ing'},
+      {t: 'They love ___ all night.', v: 'dance', ans: 'ing'},
+      {t: 'She enjoys ___ for her family.', v: 'cook', ans: 'ing'},
+      {t: 'Avoid ___ when you are tired.', v: 'drive', ans: 'ing'},
+      {t: 'I can’t stand ___ in long lines.', v: 'wait', ans: 'ing'},
+      {t: 'I’m interested in ___ more about history.', v: 'learn', ans: 'ing'},
+      {t: 'We plan ___ them next summer.', v: 'visit', ans: 'to'},
+      {t: 'He promised ___ me with the move.', v: 'help', ans: 'to'},
+      {t: 'She decided ___ early.', v: 'leave', ans: 'to'},
+      {t: 'They tried ___ the problem yesterday.', v: 'solve', ans: 'to'},
+      {t: 'He kept ___ no matter what happened.', v: 'smile', ans: 'ing'},
+      {t: 'She stopped ___ for coffee on the way.', v: 'send', ans: 'to'},
+      {t: 'I stopped ___ after that event.', v: 'smoke', ans: 'ing'},
+      {t: 'He started ___ piano when he was six.', v: 'play', ans: 'ing'},
+      {t: 'They continue ___ every week.', v: 'meet', ans: 'ing'},
+      {t: 'She prefers ___ tea in the morning.', v: 'drink', ans: 'ing'},
+      {t: 'Would you like ___ something to eat?', v: 'have', ans: 'to'},
+      {t: 'He expects ___ promoted next year.', v: 'be', ans: 'to'},
+      {t: 'We hope ___ on time.', v: 'arrive', ans: 'to'},
+      {t: 'I refused ___ the job.', v: 'take', ans: 'to'},
+      {t: 'She apologized for ___ late.', v: 'be', ans: 'ing'},
+      {t: 'Thanks for ___ me with the bags.', v: 'help', ans: 'ing'},
+      {t: 'He avoids ___ during rush hour.', v: 'drive', ans: 'ing'},
+      {t: 'I missed ___ you at the party.', v: 'see', ans: 'ing'},
+      {t: 'They agreed ___ the project next month.', v: 'start', ans: 'to'},
+      {t: 'She plans ___ medicine at university.', v: 'study', ans: 'to'},
+      {t: 'He promised ___ back soon.', v: 'come', ans: 'to'},
+      {t: 'Can you ___ me move this box?', v: 'help', ans: 'base'},
+      {t: 'She made him ___ the truth.', v: 'tell', ans: 'base'},
+      {t: 'Let him ___ if he wants to.', v: 'speak', ans: 'base'},
+      {t: 'I’d like ___ a bigger flat.', v: 'find', ans: 'to'},
+      {t: 'She hopes ___ fluent one day.', v: 'become', ans: 'to'},
+      {t: 'He finished ___ the report last night.', v: 'write', ans: 'ing'},
+      {t: 'They enjoy ___ in the park.', v: 'jog', ans: 'ing'},
+      {t: 'I can’t help ___ when I watch that show.', v: 'laugh', ans: 'ing'},
+      {t: 'He managed ___ the problem by himself.', v: 'solve', ans: 'to'},
+      {t: 'She tends ___ early during the week.', v: 'wake', ans: 'to'},
+      {t: 'They wished ___ they had more time.', v: 'have', ans: 'to'},
+      {t: 'He dared ___ without any help.', v: 'go', ans: 'to'},
+      {t: 'She admitted ___ the mistake.', v: 'make', ans: 'ing'},
+      {t: 'I don’t mind ___ your car.', v: 'use', ans: 'ing'},
+      {t: 'He can’t stand ___ in silence.', v: 'sit', ans: 'ing'},
+      {t: 'We practiced ___ the speech.', v: 'give', ans: 'ing'},
+      {t: 'She needs ___ for her exam.', v: 'study', ans: 'to'},
+      {t: 'They offered ___ us at the station.', v: 'meet', ans: 'to'},
+      {t: 'I remember ___ him years ago.', v: 'meet', ans: 'ing'}
+    ];
+
+    // Utility functions for verb --> gerund conversion
+    function isVowel(ch){return 'aeiou'.includes(ch.toLowerCase())}
+
+    function toGerund(verb){
+      // handle irregularities: ie -> y (lie -> lying)
+      if(verb.endsWith('ie')){
+        return verb.slice(0,-2)+'ying';
+      }
+      // verbs ending with single 'e' (but not 'ee') drop the 'e'
+      if(verb.endsWith('e') && !verb.endsWith('ee')){
+        return verb.slice(0,-1)+'ing';
+      }
+      // double final consonant for CVC short verbs (run->running)
+      if(verb.length>=3){
+        const a = verb[verb.length-3];
+        const b = verb[verb.length-2];
+        const c = verb[verb.length-1];
+        if(!isVowel(a) && isVowel(b) && !isVowel(c) && !'wxy'.includes(c.toLowerCase())){
+          return verb + c + 'ing';
+        }
+      }
+      // default
+      return verb + 'ing';
+    }
+
+    // Build full questions with computed gerund and option strings
+    const questions = rawQuestions.map(q=>{
+      const ger = toGerund(q.v);
+      const base = q.v;
+      const infinitive = 'to ' + q.v;
+      // determine correct string
+      const correct = q.ans === 'ing' ? ger : (q.ans === 'to' ? infinitive : base);
+      return {text: q.t, base, infinitive, ger, correct};
+    });
+
+    // shuffle and runtime
+    function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+    let pool = shuffle(questions.slice());
+    const total = pool.length;
+    let index = 0; let score = 0;
+
+    const sentenceEl = document.getElementById('sentence');
+    const optionsEl = document.getElementById('options');
+    const statusEl = document.getElementById('status');
+    const nextBtn = document.getElementById('nextBtn');
+    document.getElementById('total').textContent = total;
+
+    function render(){
+      if(index >= total){
+        sentenceEl.textContent = `Kész! Eredményed: ${score}/${total}. Szuper munka!`;
+        optionsEl.innerHTML = '';
+        statusEl.textContent = '';
+        nextBtn.disabled = true;
+        return;
+      }
+      const q = pool[index];
+      sentenceEl.textContent = q.text;
+      optionsEl.innerHTML = '';
+      statusEl.textContent = '';
+      nextBtn.disabled = true;
+
+      // create options: base, infinitive, gerund -> shuffle
+      const opts = shuffle([q.base, q.infinitive, q.ger]);
+      opts.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.textContent = opt;
+        btn.addEventListener('click', ()=>{
+          if(btn.disabled) return;
+          if(opt === q.correct){
+            btn.classList.add('success');
+            statusEl.textContent = 'Excellent!';
+            statusEl.style.color = 'var(--success)';
+            score++;
+            document.getElementById('score').textContent = score;
+            // disable all
+            document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+            nextBtn.disabled = false;
+          } else {
+            btn.classList.add('error');
+            statusEl.textContent = 'Try again!';
+            statusEl.style.color = 'var(--error)';
+            // allow more tries but mark this button disabled
+            btn.disabled = true;
+          }
+        });
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    nextBtn.addEventListener('click', ()=>{
+      index++;
+      render();
+    });
+
+    // initial
+    document.getElementById('score').textContent = score;
+    render();
+
+  </script>
+</body>
+</html>
